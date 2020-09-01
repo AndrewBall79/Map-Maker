@@ -1,13 +1,25 @@
-body {
+html,
+body,
+#root,
+#__app {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 14px;
+  font-family: "Airbnb Cereal App Book", sans-serif;
+  background-color: black;
+}
+* {
+  font-family: "Airbnb Cereal App Book", sans-serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+input[type="text"] {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  box-sizing: border-box;
+  color: #333;
+  padding: 8px 52px 8px 10px;
+  transition: all 200ms ease;
 }

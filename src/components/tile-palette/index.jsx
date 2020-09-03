@@ -1,7 +1,20 @@
 import React from "react";
+import Dropdown from "react-dropdown";
+import 'react-dropdown/style.css';
 
-export default function TilePalette({tileset, position, size}) {
-    const {width, height} = size;
+export default function TilePalette({tileset, setTileset, position, activeTile, setActiveTile, setBgTile
+                                    }) {
+    const tilesetData = require("../../data/tilesets");
+    const tilesets = Object.keys(tilesetData).map(set => ({
+        type: "group",
+        name: set.replace(/-/g, " "),
+        items: tilesetData[set].variants.map(variant => ({
+            value: `${set}/${variant}`,
+            label: variant,
+        }))
+    }));
+    const [tilesetGroup, tilesetVariant] = tileset.split("/");
+    const {width, height} = tilesetData[tilesetGroup].size;
     const tiles = [];
     let id = 0;
 
@@ -28,23 +41,58 @@ export default function TilePalette({tileset, position, size}) {
                 backgroundColor: "grey"
             }}
         >
-            <img id="handle" src="/img/drag-handle.png" alt="handle"/>
-            {
-                tiles.map((row, y) => (
-                    <div style={{display: "flex"}}>
-                        {row.map((tile, x) => (
-                            <div
-                                style={{
-                                    borderTop: "1px solid black",
-                                    borderRight: "1px solid black",
-                                    background: `url(/sprites/${tileset}.png) -${x * 32}px -${y * 32}px no-repeat`,
-                                    width: 32,
-                                    height: 32,
-                                }}
-                            />
-                        ))}
-                    </div>
-                ))}
+            <div style={{display: "flex", margin: 4}}>
+                <img id="handle" src="/img/drag-handle.png" alt="handle"/>
+                <div style={{position: "relative", width: 32, marginLeft: 8}}>
+                    <div
+                        style={{
+                            background: `url(/sprites/${tileset}.png) -${activeTile.x}px -${activeTile.y}px no-repeat`,
+                            width: 32,
+                            height: 32,
+                        }}
+                    />
+                </div>
+
+                <div style={{width: 200, marginLeft: 8}}>
+                    <Dropdown
+                        options={tilesets}
+                        onChange={tileset => setTileset(tileset.value)}
+                        value={tileset}
+
+                    />
+                </div>
+
+                <div style={{width: 200, marginLeft: 8}}>
+                    <button
+                    onClick={()=> setBgTile(activeTile)}
+                    style={{
+                        padding: "6px 20px",
+                        fontSize: 14
+                    }
+                    }
+                    >
+                        Fill BG
+                    </button>
+
+                </div>
+
+                </div>
+            {tiles.map((row, y) => (
+                <div style={{display: "flex"}}>
+                    {row.map((tile, x) => (
+                        <div
+                            onClick={() => setActiveTile({x: x * 32, y: y * 32})}
+                            style={{
+                                borderTop: "1px solid black",
+                                borderRight: "1px solid black",
+                                background: `url(/sprites/${tileset}.png) -${x * 32}px -${y * 32}px no-repeat`,
+                                width: 32,
+                                height: 32,
+                            }}
+                        />
+                    ))}
+                </div>
+            ))}
         </div>
     );
 }

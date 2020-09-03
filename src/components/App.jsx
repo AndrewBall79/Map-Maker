@@ -5,9 +5,11 @@ import TilePalette from "./tile-palette";
 import Map from "./map";
 
 
-function App() {
+export default function App() {
     const [tileset, setTileset] = useState("rpg-nature-tileset/spring");
+    const [activeTile, setActiveTile] = useState({x: 1 * 32, y: 4 * 32});
     const[tiles, setTiles] = useState([]);
+    const [bgTile, setBgTile] = useState({x: -32, y: -32});
     const [mapSize, setMapSize] = useState({
         width: 800,
         height: 600,
@@ -32,7 +34,7 @@ function App() {
             _tiles.push(row)
         }
         setTiles(_tiles)
-    },[]);
+    },[mapSize.height, mapSize.width]);
 
     return (
         <div style={{
@@ -47,14 +49,21 @@ function App() {
         <TilePalette
             position={position}
             tileset={tileset}
-            size={{
-                height: 288,
-                width: 640,
-            }}
+            setTileset={setTileset}
+            activeTile={activeTile}
+            setActiveTile={setActiveTile}
+            setBgTile={setBgTile}
         />
-        <Map/>
+        <Map
+            tiles={tiles}
+            tileset={tileset}
+            size={mapSize}
+            activeTile={activeTile}
+            setTiles={setTiles}
+            bgTile={bgTile}
+        />
         </div>
     );
 }
 
-export default App;
+
